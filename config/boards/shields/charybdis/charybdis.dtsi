@@ -42,6 +42,7 @@
         a-gpios = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         b-gpios = <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         steps = <12>;
+		resolution = <12>;
         status = "disabled";
     };
 
@@ -49,7 +50,8 @@
         compatible = "alps,ec11";
       a-gpios = <&gpio1 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
         b-gpios = <&gpio1 11 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        steps = <1>;
+        steps = <12>;
+ 		resolution = <12>;
         status = "disabled";
     };
 
