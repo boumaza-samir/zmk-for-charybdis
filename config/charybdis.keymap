@@ -1,16 +1,17 @@
 #include <dt-bindings/zmk/mouse.h>
+#include <behaviors/mouse_keys.dtsi>
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
 
-// Définitions des noms de couches pour plus de clarté
+// Correction 1 : Renommage de SCROLL en SCRL pour éviter le conflit
 #define BASE 0
 #define LOWER 1
 #define POINTER 2
 #define RAISE 3
 #define SYMBOLS 4
-#define SCROLL_LAYER 5
+#define SCRL 5 
 #define SNIPING 6
 #define GAMING 7
 
@@ -22,6 +23,29 @@
 
 / {
     behaviors {
+        // Correction 2 : Ajout des "label" requis pour chaque behavior
+        
+        // Hold-tap behavior for layer with tap-preferred
+        blt: blt {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <300>;
+            require-prior-idle-ms = <100>;
+            bindings = <&mo>, <&kp>;
+            label = "LAYER_TAP_PREFERRED"; // Label ajouté
+        };
+
+        // Tap-dance for GUI/Ctrl+B
+        gui_ctrlb: gui_ctrlb {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp LGUI>, <&kp LC(B)>;
+            label = "GUI_CTRLB"; // Label ajouté
+        };
+
         // Home row mods - Main gauche
         hml: home_row_mod_left {
             compatible = "zmk,behavior-hold-tap";
@@ -33,6 +57,7 @@
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35 42 43 44 45 46 47>; 
             hold-trigger-on-release;
+            label = "HML"; // Label ajouté
         };
 
         // Home row mods - Main droite
@@ -46,14 +71,28 @@
             bindings = <&kp>, <&kp>;
             hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29 36 37 38 39 40 41>;
             hold-trigger-on-release;
+            label = "HMR"; // Label ajouté
         };
+    };
 
-        // Tap-dance pour GUI/Ctrl+B
-        gui_ctrlb: gui_ctrlb {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp LGUI>, <&kp LC(B)>;
+    macros {
+        CAC: CAC {
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            bindings = <&macro_press &kp LCTRL &kp LALT &kp LGUI>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LALT &kp LGUI>;
+            label = "CTRL_ALT_CMD"; // Label ajouté par précaution
+        };
+        CA: CA {
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            bindings = <&macro_press &kp LCTRL &kp LALT>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LALT>;
+            label = "CTRL_ALT"; // Label ajouté par précaution
+        };
+         CSA: CSA {
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            bindings = <&macro_press &kp LCTRL &kp LSHIFT &kp LALT>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LSHIFT &kp LALT>;
+            label = "CTRL_SHIFT_ALT";
         };
     };
 
@@ -61,7 +100,7 @@
         compatible = "zmk,combos";
         combo_gaming_toggle {
             timeout-ms = <50>;
-            key-positions = <49 50 51>; // À adapter selon votre position physique
+            key-positions = <49 50 51>; // À adapter selon votre position physique exacte
             bindings = <&tog GAMING>;
         };
     };
@@ -86,22 +125,53 @@
 &kp F1          &kp F2          &kp F3          &kp F4        &kp F5        &kp F6          &kp F7        &kp F8        &kp F9        &kp F10            &kp F11         &kp F12
 &kp CAPS        &none           &none           &mo SNIPING   &none         &bt BT_NXT      &none         &none         &kp UP        &none              &none           &none
 &kp LEFT_SHIFT  &none           &none           &mkp RCLK     &mkp LCLK     &bt BT_CLR      &none         &kp LEFT      &kp DOWN      &kp RIGHT          &none           &none
-&kp LCTRL       &none           &none           &none         &none         &mo SCROLL_LAYER     &none         &none         &kp PERIOD    &kp RIGHT_BRACKET  &none           &kp EQUAL
+&kp LCTRL       &none           &none           &none         &none         &mo SCRL        &none         &none         &kp PERIOD    &kp RIGHT_BRACKET  &none           &kp EQUAL
                                                 &kp LEFT_WIN  &kp SPACE     &none           &kp LALT      &kp DELETE
                                                               &mkp MB1      &mkp MB2        &kp ENTER
             >;
             trackball-bindings = <&tsl>;
         };
 
-        // Couche de défilement (Scroll)
+        pointer_layer {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+                        &trans  &trans  &trans  &trans  &trans
+                                &trans  &trans  &trans
+            >;
+        };
+        
+        raise_layer {
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+                        &trans  &trans  &trans  &trans  &trans
+                                &trans  &trans  &trans
+            >;
+        };
+
+        symbols_layer {
+            bindings = <
+&kp GRAVE  &trans     &trans     &trans     &trans     &trans     &trans     &trans     &trans    &trans    &trans     &trans
+&kp TILDE  &kp SQT    &kp LT     &kp GT     &kp DQT    &kp DOT    &kp COMMA  &kp AMPS   &kp LBKT  &kp RBKT  &kp PRCNT  &trans
+&trans     &kp EXCL   &kp MINUS  &kp PLUS   &kp EQUAL  &kp UNDER  &kp PIPE   &kp COLON  &kp LPAR  &kp RPAR  &kp QMARK  &trans
+&trans     &kp CARET  &kp FSLH   &kp ASTRK  &kp BSLH   &kp HASH   &kp TILDE  &kp DLLR   &kp LBRC  &kp RBRC  &kp AT     &trans
+                      &trans     &trans     &trans     &trans     &trans
+                                 &trans     &trans     &trans
+            >;
+        };
+
         scroll_layer {
-            bindings = <&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans>;
+            bindings = <&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans>;
             trackball-bindings = <&tsl>;
         };
 
-        // Couche de précision (Sniping)
         sniping_layer {
-            bindings = <&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans>;
+            bindings = <&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans>;
             trackball-bindings = <&tmv_fine>;
         };
 
