@@ -4,7 +4,7 @@
 #include <dt-bindings/zmk/mouse.h>
 #include <dt-bindings/zmk/pointing.h>
 
-// Correction : Nettoyage des caractères invisibles après les chiffres
+// Correction : Nettoyage des caractères invisibles et espaces après les définitions
 #define BASE 0
 #define LOWER 1
 #define POINTER 2
@@ -22,23 +22,6 @@
 
 / {
     behaviors {
-        blt: blt {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <200>;
-            quick-tap-ms = <300>;
-            require-prior-idle-ms = <100>;
-            bindings = <&mo>, <&kp>;
-        };
-
-        gui_ctrlb: gui_ctrlb {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp LGUI>, <&kp LC(B)>;
-        };
-
         hml: home_row_mod_left {
             compatible = "zmk,behavior-hold-tap";
             #binding-cells = <2>;
@@ -64,107 +47,95 @@
         };
     };
 
-    combos {
-        compatible = "zmk,combos";
-        combo_gaming_toggle {
-            timeout-ms = <50>;
-            key-positions = <49 50 51>; 
-            bindings = <&tog GAMING>;
-        };
-    };
-
     keymap {
         compatible = "zmk,keymap";
 
         base_layer {
             bindings = <
-&kp ESC         &kp N1          &kp N2          &kp N3        &kp N4        &kp N5          &kp N6        &kp N7        &kp N8        &kp N9             &kp N0          &kp BACKSPACE
+&kp ESC         &kp N1          &kp N2          &kp N3        &kp N4        &kp N5          &kp N6        &kp N7        &kp N8        &kp N9             &kp N0          &kp BSPC
 &kp TAB         &kp Q           &kp W           &kp E         &kp R         &kp T           &kp Y         &kp U         &kp I         &kp O              &kp P           &kp BSLH
-&kp LEFT_SHIFT  &kp A           &kp S           &kp D         &kp F         &kp G           &kp H         &kp J         &kp K         &kp L              &kp SEMI        &kp SQT
-&kp LCTRL       &hml LGUI Z     &hml LALT X     &hml LCTRL C  &hml LSHIFT V &kp B           &kp N         &hmr RSHIFT M &hmr RCTRL COMMA &hmr RALT DOT  &hmr RGUI FSLH  &kp MINUS
-                                                              &kp LEFT_WIN  &kp SPACE       &mo LOWER     &kp LALT      &lt SYMBOLS GRAVE
+&kp LSHFT       &kp A           &kp S           &kp D         &kp F         &kp G           &kp H         &kp J         &kp K         &kp L              &kp SEMI        &kp SQT
+&kp LCTRL       &hml LGUI Z     &hml LALT X     &hml LCTRL C  &hml LSHFT V  &kp B           &kp N         &hmr RSHFT M  &hmr RCTRL COMMA &hmr RALT DOT  &hmr RGUI FSLH  &kp MINUS
+                                                              &kp LGUI      &kp SPACE       &mo LOWER     &kp LALT      &lt SYMBOLS GRAVE
                                                                             &mkp MB1        &mkp MB2      &kp ENTER
             >;
-            trackball-bindings = <&tmv_coarse>;
         };
 
         lower_layer {
             bindings = <
 &kp F1          &kp F2          &kp F3          &kp F4        &kp F5        &kp F6          &kp F7        &kp F8        &kp F9        &kp F10            &kp F11         &kp F12
 &kp CAPS        &none           &none           &mo SNIPING   &none         &bt BT_NXT      &none         &none         &kp UP        &none              &none           &none
-&kp LEFT_SHIFT  &none           &none           &mkp RCLK     &mkp LCLK     &bt BT_CLR      &none         &kp LEFT      &kp DOWN      &kp RIGHT          &none           &none
-&kp LCTRL       &none           &none           &none         &none         &mo SCRL        &none         &none         &kp PERIOD    &kp RIGHT_BRACKET  &none           &kp EQUAL
-                                                              &kp LEFT_WIN  &kp SPACE       &none         &kp LALT      &kp DELETE
-                                                                            &mkp MB1        &mkp MB2      &kp ENTER
+&kp LSHFT       &none           &none           &mkp RCLK     &mkp LCLK     &bt BT_CLR      &none         &kp LEFT      &kp DOWN      &kp RIGHT          &none           &none
+&kp LCTRL       &none           &none           &none         &none         &mo SCRL        &none         &none         &kp PERIOD    &kp RBKT           &none           &kp EQUAL
+                                                              &trans        &trans          &none         &trans        &kp DEL
+                                                                            &trans          &trans        &trans
             >;
-            trackball-bindings = <&tsl>;
         };
 
+        // Les couches ci-dessous ont été corrigées pour avoir exactement 56 touches
         pointer_layer {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-                            &trans &trans &trans &trans &trans
-                                          &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+                     &trans &trans &trans    &trans &trans
+                            &trans &trans    &trans
             >;
         };
 
         raise_layer {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-                            &trans &trans &trans &trans &trans
-                                          &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+                     &trans &trans &trans    &trans &trans
+                            &trans &trans    &trans
             >;
         };
 
         symbols_layer {
             bindings = <
-&kp GRAVE  &trans     &trans     &trans     &trans     &trans     &trans     &trans     &trans    &trans    &trans     &trans
-&kp TILDE  &kp SQT    &kp LT     &kp GT     &kp DQT    &kp DOT    &kp COMMA  &kp AMPS   &kp LBKT  &kp RBKT  &kp PRCNT  &trans
-&trans     &kp EXCL   &kp MINUS  &kp PLUS   &kp EQUAL  &kp UNDER  &kp PIPE   &kp COLON  &kp LPAR  &kp RPAR  &kp QMARK  &trans
-&trans     &kp CARET  &kp FSLH   &kp ASTRK  &kp BSLH   &kp HASH   &kp TILDE  &kp DLLR   &kp LBRC  &kp RBRC  &kp AT     &trans
-                                 &trans     &trans     &trans     &trans     &trans
-                                            &trans     &trans     &trans
+&kp GRAVE  &trans     &trans     &trans     &trans     &trans       &trans     &trans     &trans    &trans    &trans     &trans
+&kp TILDE  &kp SQT    &kp LT     &kp GT     &kp DQT    &kp DOT      &kp COMMA  &kp AMPS   &kp LBKT  &kp RBKT  &kp PRCNT  &trans
+&trans     &kp EXCL   &kp MINUS  &kp PLUS   &kp EQUAL  &kp UNDER    &kp PIPE   &kp COLON  &kp LPAR  &kp RPAR  &kp QMARK  &trans
+&trans     &kp CARET  &kp FSLH   &kp ASTRK  &kp BSLH   &kp HASH     &kp TILDE  &kp DLLR   &kp LBRC  &kp RBRC  &kp AT     &trans
+                                 &trans     &trans     &trans       &trans     &trans
+                                            &trans     &trans       &trans
             >;
         };
 
         scroll_layer {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-                            &trans &trans &trans &trans &trans
-                                          &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+                     &trans &trans &trans    &trans &trans
+                            &trans &trans    &trans
             >;
-            trackball-bindings = <&tsl>;
         };
 
         sniping_layer {
             bindings = <
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
-                            &trans &trans &trans &trans &trans
-                                          &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+&trans &trans &trans &trans &trans &trans    &trans &trans &trans &trans &trans &trans
+                     &trans &trans &trans    &trans &trans
+                            &trans &trans    &trans
             >;
-            trackball-bindings = <&tmv_fine>;
         };
 
         gaming_layer {
             bindings = <
-&kp ESC         &kp N1          &kp N2          &kp N3        &kp N4        &kp N5          &kp N6        &kp N7        &kp N8        &kp N9             &kp N0          &kp DEL
-&kp T           &kp TAB         &kp Q           &kp W         &kp E         &kp R           &kp Y         &kp U         &kp I         &kp O              &kp P           &kp BSLH
-&kp G           &kp LSFT        &kp A           &kp S         &kp D         &kp F           &kp H         &kp J         &kp K         &kp L              &kp SEMI        &kp SQT
-&kp B           &kp LCTRL       &kp Z           &kp X         &kp C         &kp V           &kp N         &kp M         &kp COMMA     &kp DOT            &kp FSLH        &kp RSFT
-                                                              &trans        &kp SPACE       &trans        &trans        &trans
-                                                                            &trans          &trans        &trans
+&kp ESC    &kp N1     &kp N2     &kp N3     &kp N4     &kp N5       &kp N6     &kp N7     &kp N8     &kp N9     &kp N0     &kp DEL
+&kp T      &kp TAB    &kp Q      &kp W      &kp E      &kp R        &kp Y      &kp U      &kp I      &kp O      &kp P      &kp BSLH
+&kp G      &kp LSHFT  &kp A      &kp S      &kp D      &kp F        &kp H      &kp J      &kp K      &kp L      &kp SEMI   &kp SQT
+&kp B      &kp LCTRL  &kp Z      &kp X      &kp C      &kp V        &kp N      &kp M      &kp COMMA  &kp DOT    &kp FSLH   &kp RSHFT
+                                 &trans     &kp SPACE  &trans       &trans     &trans
+                                            &trans     &trans       &trans
             >;
         };
     };
