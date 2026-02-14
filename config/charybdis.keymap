@@ -57,19 +57,6 @@
         };
     };
 
-    macros {
-        CAC: CAC {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings = <&macro_press &kp LCTRL &kp LALT &kp LGUI>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LALT &kp LGUI>;
-        };
-        CA: CA {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings = <&macro_press &kp LCTRL &kp LALT>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LALT>;
-        };
-    };
-
     combos {
         compatible = "zmk,combos";
         combo_gaming_toggle {
