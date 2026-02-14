@@ -74,26 +74,7 @@
         };
     };
 
-    macros {
-        CAC: CAC {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings = <&macro_press &kp LCTRL &kp LALT &kp LGUI>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LALT &kp LGUI>;
-            label = "CTRL_ALT_CMD"; // Label ajouté par précaution
-        };
-        CA: CA {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings = <&macro_press &kp LCTRL &kp LALT>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LALT>;
-            label = "CTRL_ALT"; // Label ajouté par précaution
-        };
-         CSA: CSA {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings = <&macro_press &kp LCTRL &kp LSHIFT &kp LALT>, <&macro_param_1to1>, <&macro_tap &kp MACRO_PLACEHOLDER>, <&macro_release &kp LCTRL &kp LSHIFT &kp LALT>;
-            label = "CTRL_SHIFT_ALT";
-        };
-    };
+   
 
     combos {
         compatible = "zmk,combos";
