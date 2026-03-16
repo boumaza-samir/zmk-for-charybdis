@@ -11,11 +11,10 @@
 #   - board: nice_nano_v2
 #     shield: reviung41
 #
----
 include:
-  - board: nice_nano
+  - board: nice_nano_v2//zmk
     shield: charybdis_left
-  - board: nice_nano
+  - board: nice_nano_v2//zmk
     shield: charybdis_right
-  - board: nice_nano
+  - board: nice_nano_v2//zmk
     shield: settings_reset
