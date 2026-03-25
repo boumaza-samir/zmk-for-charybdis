@@ -7,7 +7,7 @@ manifest:
   projects:
     - name: zmk
       remote: zmk
-      revision: main
+      revision: v0.3  # Pinned to last stable release (pre-Zephyr 4.1)
       import:
         - app/west.yml
     - name: charybdis-zmk-module
